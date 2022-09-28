@@ -9,6 +9,7 @@ public class LooCApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LooCApplication.class, args);
+		System.out.print("test");
 	}
 
 }
