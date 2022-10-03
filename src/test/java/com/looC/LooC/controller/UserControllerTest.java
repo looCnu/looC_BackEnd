@@ -3,6 +3,7 @@ package com.looC.LooC.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.looC.LooC.controller.request.UserLoginRequest;
+import com.looC.LooC.exception.ErrorCode;
 import com.looC.LooC.exception.LoocApplicationException;
 import com.looC.LooC.model.User;
 import com.looC.LooC.service.UserService;
@@ -35,7 +36,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void 회원가입() throws Exception {
+    public void register() throws Exception {
         String userName = "userName";
         String password = "password";
 
@@ -53,11 +54,11 @@ public class UserControllerTest {
 
 
     @Test
-    public void 회원가입시_이미_회원가입된_userName_으로_회원가입하는경우_에러반환() throws Exception{
+    public void register_duplicated_id() throws Exception{
         String userName = "userName";
         String password = "password";
 
-        when(userService.join(userName, password)).thenThrow(new LoocApplicationException());
+        when(userService.join(userName, password)).thenThrow(new LoocApplicationException(ErrorCode.DUPLICATED_USER_NAME, ""));
 
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +69,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void 로그인() throws Exception {
+    public void login() throws Exception {
         String userName = "userName";
         String password = "password";
 
@@ -86,13 +87,13 @@ public class UserControllerTest {
 
 
     @Test
-    public void 로그인시_아이디가_틀린경우() throws Exception {
+    public void login_id_difference() throws Exception {
         String userName = "userName";
         String password = "password";
 
         //TODO : mocking
 
-        when(userService.login(userName, password)).thenThrow(new LoocApplicationException());
+        when(userService.login(userName, password)).thenThrow(new LoocApplicationException(ErrorCode.DUPLICATED_USER_NAME, ""));
 
         mockMvc.perform(post("/api/v1/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,13 +104,13 @@ public class UserControllerTest {
     }
 
     @Test
-    public void 로그인시_비밀번호가_틀린경우() throws Exception {
+    public void login_password_difference() throws Exception {
         String userName = "userName";
         String password = "password";
 
         //TODO : mocking
 
-        when(userService.login(userName, password)).thenThrow(new LoocApplicationException());
+        when(userService.login(userName, password)).thenThrow(new LoocApplicationException(ErrorCode.DUPLICATED_USER_NAME, ""));
 
         mockMvc.perform(post("/api/v1/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
